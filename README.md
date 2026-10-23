@@ -3,9 +3,12 @@
 > 一张属于你自己的地图。去过的地方、想吃的美食、想去的远方，双击地图就能记一笔。
 > 纯静态网页，**双击 HTML 就能用，上传到服务器也能用，数据全在你自己手里**。
 
-在线体验：<[御坂博客足迹](https://misaka10013.cn/map/)> 
+在线体验：
 
-<[work Buddy托管版本](https://misaka10013.cn/map/)> 可快速部署或者让workbuddy修改代码。
+- [御坂博客足迹](https://misaka10013.cn/map/) —— 作者的真实数据版（只读浏览）
+- [WorkBuddy 托管版](https://footprint-map-80152.app.workbuddy.host/?sharecode=JBKD64OSC6) —— 示例数据，双击地图就能上手改
+
+> 想改成自己的？配置、数据存放位置、导入导出、改默认视角都在 **[详细用法与配置](docs/USAGE.md)**。
 
 ---
 
