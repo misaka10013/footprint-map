@@ -1,0 +1,11 @@
+# 参赛文案不进公开仓库
+SUBMISSION.md
+
+# 系统与编辑器杂项
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+node_modules/
+.vscode/
+.idea/

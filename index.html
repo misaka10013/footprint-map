@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="我的足迹地图 —— 在地图上记录去过的地方、想吃的美食、想去的远方。数据存在你自己的设备上，可导出可导入，也能接自己的云端同步。">
+<meta name="theme-color" content="#1f2733">
+<title>我的足迹地图</title>
+<link rel="stylesheet" href="style.css?v=20261023a">
+</head>
+<body>
+
+<!-- 私密点位解锁弹窗 -->
+<div id="lockScreen" class="hide">
+  <div class="lock-box" id="lockBox">
+    <button class="lock-close" id="lockClose" type="button" title="关闭">✕</button>
+    <div class="lock-icon">🔒</div>
+    <div class="lock-title">私密点位</div>
+    <div class="lock-hint">输入密码后显示全部私密点位</div>
+    <div class="lock-row">
+      <input type="password" id="lockPwd" placeholder="私密点位密码" autocomplete="off" spellcheck="false">
+      <button id="lockBtn" type="button">解锁</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+  </div>
+</div>
+
+<!-- 顶部工具栏 -->
+<div id="toolbar">
+  <span class="brand" id="brandTitle" title="关于这个地图">📍 足迹地图</span>
+  <span class="mode-tag" id="modeTag" title="当前数据存放方式">本机</span>
+
+  <select class="tool-select" id="layerSelect" title="选择底图">
+    <option value="normal">🗺️ 标准地图</option>
+    <option value="satellite">🛰️ 卫星地图</option>
+    <option value="osm">🌍 OSM</option>
+    <option value="carto">🗺️ Carto 浅色</option>
+    <option value="esri">🛰️ Esri 卫星</option>
+    <option value="tianditu">🛰️ 天地图卫星</option>
+  </select>
+  <button class="tool-btn" id="btnRoute" title="路线模式">📍 <span class="btn-text">路线</span></button>
+  <button class="tool-btn" id="btnExpandAll" title="展开全部弹窗">🔽 <span class="btn-text">展开</span></button>
+  <button class="tool-btn" id="btnCloseAll" title="关闭全部弹窗">🔼 <span class="btn-text">关闭</span></button>
+  <button class="tool-btn" id="btnFilter" title="分组筛选">🏷️ <span class="btn-text">分组</span> <span class="badge" id="filterBadge" style="display:none"></span></button>
+
+  <div class="tool-sep"></div>
+
+  <div id="searchWrap">
+    <input type="text" id="searchInput" placeholder="🔍 搜索地点名称..." autocomplete="off">
+    <div id="searchResults"></div>
+  </div>
+
+  <div class="tool-sep"></div>
+
+  <button class="tool-btn" id="btnExport" title="导出 JSON 备份">💾 <span class="btn-text">导出</span></button>
+  <button class="tool-btn" id="btnImport" title="导入 JSON">📂 <span class="btn-text">导入</span></button>
+  <button class="tool-btn" id="btnReset" title="清空本机数据，回到初始示例">🔄 <span class="btn-text">重置</span></button>
+  <button class="tool-btn" id="btnLock" title="显示/隐藏私密点位">🔒 <span class="btn-text">私密</span></button>
+  <!-- 云模式下解锁后才出现（见 updateSubmitBtn） -->
+  <button class="tool-btn" id="btnSubmit" title="把本机改动提交到云端" style="display:none">☁️ <span class="btn-text">提交</span> <span class="badge" style="display:none">0</span></button>
+  <button class="tool-btn" id="btnSettings" title="设置">⚙️</button>
+  <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+</div>
+
+<!-- 分组筛选面板 -->
+<div id="filterPanel">
+  <div class="f-title">分组筛选（点击切换显示）</div>
+  <div id="filterList"></div>
+  <div class="f-sep"></div>
+  <div class="f-time-title">时间区间筛选</div>
+  <label class="f-time-enable"><input type="checkbox" id="timeEnable"> 按时间区间筛选轨迹与点位</label>
+  <div class="f-time-presets">
+    <button type="button" class="time-preset" data-preset="all">全部</button>
+    <button type="button" class="time-preset" data-preset="year">近1年</button>
+    <button type="button" class="time-preset" data-preset="3year">近3年</button>
+    <button type="button" class="time-preset" data-preset="custom">自定义</button>
+  </div>
+  <div class="f-time-range" id="timeRange" style="display:none">
+    <label class="f-time-label">开始<input type="datetime-local" id="timeStart"></label>
+    <label class="f-time-label">结束<input type="datetime-local" id="timeEnd"></label>
+    <div class="f-time-hint">选开始时间后，结束默认自动 +1 年；可手动修改结束。</div>
+  </div>
+</div>
+
+<!-- 通知条容器 -->
+<div id="notices"></div>
+
+<!-- 设置面板 -->
+<div id="settingsScreen" class="hide">
+  <div class="settings-box">
+    <button class="settings-close" id="settingsClose" type="button" title="关闭">✕</button>
+    <div class="settings-title">设置</div>
+
+    <div class="set-sec">
+      <div class="set-label">数据存在哪里</div>
+      <div class="set-modes">
+        <label class="set-mode"><input type="radio" name="fpMode" value="local">
+          <span><b>本机</b><i>存在这台设备上，双击 HTML 就能用，不联网</i></span></label>
+        <label class="set-mode"><input type="radio" name="fpMode" value="static">
+          <span><b>静态托管</b><i>放在网页服务器上，任何人打开都能用，各自存各自的数据</i></span></label>
+        <label class="set-mode"><input type="radio" name="fpMode" value="cloud">
+          <span><b>云端同步</b><i>接自己的接口，多设备共享同一份数据（需要填写 API 地址）</i></span></label>
+      </div>
+      <div class="set-row" id="apiRow" style="display:none">
+        <input type="url" id="apiBase" placeholder="https://你的服务/api" spellcheck="false">
+        <button class="set-btn" id="apiSave">保存</button>
+      </div>
+      <div class="set-hint" id="modeHint"></div>
+    </div>
+
+    <div class="set-sec">
+      <div class="set-label">数据</div>
+      <div class="set-actions">
+        <button class="set-btn" id="setExport">💾 导出备份</button>
+        <button class="set-btn" id="setImport">📂 导入 JSON</button>
+        <button class="set-btn" id="setBlank">⬜ 清空为空白</button>
+        <button class="set-btn" id="setSeed">✨ 恢复示例数据</button>
+      </div>
+      <div class="set-hint" id="storageHint"></div>
+    </div>
+
+    <div class="set-sec">
+      <div class="set-label">底图 · 天地图 key</div>
+      <div class="set-row">
+        <input type="text" id="tdtTk" placeholder="粘贴你自己的天地图 tk（留空则不用这张底图）" spellcheck="false" autocomplete="off">
+        <button class="set-btn" id="tdtSave">保存</button>
+      </div>
+      <div class="set-hint" id="tdtHint"></div>
+    </div>
+
+    <div class="set-sec">
+      <div class="set-label">私密点位</div>
+      <div class="set-actions">
+        <button class="set-btn" id="setPwdReset">🔑 重设口令</button>
+      </div>
+      <div class="set-hint" id="pwdHint"></div>
+    </div>
+
+    <div class="set-sec set-about">
+      <div class="set-label">关于</div>
+      <div class="set-hint">
+        纯静态地图应用：Leaflet + 自研渲染，六种底图可切换，点位支持 Markdown 记录、
+        路线连线、分类与时间筛选。数据和代码都归你，不内嵌任何统计脚本。
+      </div>
+      <div class="set-hint">
+        底图瓦片来自各自的服务商（高德 / 天地图 / Esri / OSM / Carto），
+        公开使用请遵守其条款与署名要求。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 添加/编辑表单模态框 -->
+<div id="formModal">
+  <div id="formCard">
+    <div class="f-header">
+      <span id="formTitle">📍 添加地点</span>
+      <button class="close" id="formClose">✕</button>
+    </div>
+    <div class="f-body">
+      <div class="form-row">
+        <label>地点名称 <span class="req">*</span></label>
+        <input type="text" id="fName" placeholder="如：成都春熙路">
+      </div>
+      <div class="form-row">
+        <label>分类 <span class="req">*</span></label>
+        <div class="cat-radios" id="fCats"></div>
+      </div>
+      <div class="form-row">
+        <label>图标 URL</label>
+        <input type="url" id="fIconUrl" placeholder="留空则使用分类默认图标">
+      </div>
+      <div class="form-row" id="fVisitedRow" style="display:none">
+        <label class="check-row" style="display:flex; align-items:center; gap:8px; font-size:14px; cursor:pointer; margin:0;">
+          <input type="checkbox" id="fVisited"><span id="fVisitedText"> 已去过</span>
+        </label>
+      </div>
+      <div class="form-row">
+        <label class="check-row" style="display:flex; align-items:center; gap:8px; font-size:14px; cursor:pointer; margin:0;">
+          <input type="checkbox" id="fPrivate"> 🔒 私密点位（默认不显示，需解锁后查看）
+        </label>
+      </div>
+      <div class="form-row" id="fTimeRow" style="display:none">
+        <label>地点时间</label>
+        <input type="datetime-local" id="fTime" disabled>
+        <div class="hint">仅当"已去过"勾选时可编辑</div>
+      </div>
+      <div class="form-row">
+        <label>内容（Markdown）</label>
+        <textarea id="fContent" placeholder="支持 Markdown 语法，如图片：![描述](https://图床地址/图片.jpg)"></textarea>
+      </div>
+      <div id="mdPreview"></div>
+    </div>
+    <div class="f-footer">
+      <button class="btn btn-default" id="fPreview">👁️ 预览</button>
+      <button class="btn btn-default" id="fCancel">取消</button>
+      <button class="btn btn-primary" id="fSave">💾 保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 地图容器 -->
+<div id="map"></div>
+
+<!-- 底部信息栏 -->
+<div id="statusbar">
+  <span id="statCoord">—</span>
+  <span id="statZoom">缩放: —</span>
+</div>
+
+<!-- 依赖顺序不能变：leaflet/marked → secrets/auth（云端加密用）→ config（模式与配置）→ seed（初始数据）→ app（业务） -->
+<script src="vendor/leaflet.js?v=20261023a"></script>
+<script src="vendor/marked.js?v=20261023a"></script>
+<script src="vendor/secrets.js?v=20261023a"></script>
+<script src="vendor/auth.js?v=20261023a"></script>
+<script src="config.js?v=20261023a"></script>
+<script src="seed.js?v=20261023a"></script>
+<script src="app.js?v=20261023a"></script>
+</body>
+</html>

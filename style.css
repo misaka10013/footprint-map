@@ -1,0 +1,1638 @@
+
+/* ===== Leaflet CSS (inlined) ===== */
+/* required styles */
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+.leaflet-container {
+	overflow: hidden;
+	}
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+	  -webkit-user-drag: none;
+	}
+/* Prevents IE11 from highlighting tiles in blue */
+.leaflet-tile::selection {
+	background: transparent;
+}
+/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+.leaflet-safari .leaflet-tile {
+	image-rendering: -webkit-optimize-contrast;
+	}
+/* hack that prevents hw layers "stretching" when loading new tiles */
+.leaflet-safari .leaflet-tile-container {
+	width: 1600px;
+	height: 1600px;
+	-webkit-transform-origin: 0 0;
+	}
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+	}
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+	max-width: none !important;
+	max-height: none !important;
+	width: auto;
+	padding: 0;
+	}
+
+.leaflet-container img.leaflet-tile {
+	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
+	mix-blend-mode: plus-lighter;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	/* Fallback for FF which doesn't support pinch-zoom */
+	touch-action: none;
+	touch-action: pinch-zoom;
+}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	z-index: 800;
+	}
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
+
+.leaflet-pane         { z-index: 400; }
+
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
+
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}
+.lvml {
+	behavior: url(#default#VML);
+	display: inline-block;
+	position: absolute;
+	}
+
+
+/* control positioning */
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+	}
+.leaflet-top {
+	top: 0;
+	}
+.leaflet-right {
+	right: 0;
+	}
+.leaflet-bottom {
+	bottom: 0;
+	}
+.leaflet-left {
+	left: 0;
+	}
+.leaflet-control {
+	float: left;
+	clear: both;
+	}
+.leaflet-right .leaflet-control {
+	float: right;
+	}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+	}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+	}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+	}
+
+
+/* zoom and fade animations */
+
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+	}
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	}
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+/* cursors */
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+.leaflet-grab {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	cursor:         grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+	cursor: crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	cursor:         grabbing;
+	}
+
+/* marker & overlays interactivity */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+
+/* visual tweaks */
+
+.leaflet-container {
+	background: #ddd;
+	outline-offset: 1px;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
+	}
+
+
+/* general typography */
+.leaflet-container {
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+	}
+.leaflet-bar a {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+	background-color: #f4f4f4;
+	}
+.leaflet-bar a:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: none;
+	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
+
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	}
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	}
+
+/* zoom control */
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
+	}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
+	font-size: 22px;
+	}
+
+
+/* layers control */
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	}
+.leaflet-control-layers-toggle {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAQAAAADQ4RFAAACf0lEQVR4AY1UM3gkARTePdvdoTxXKc+qTl3aU5U6b2Kbkz3Gtq3Zw6ziLGNPzrYx7946Tr6/ee/XeCQ4D3ykPtL5tHno4n0d/h3+xfuWHGLX81cn7r0iTNzjr7LrlxCqPtkbTQEHeqOrTy4Yyt3VCi/IOB0v7rVC7q45Q3Gr5K6jt+3Gl5nCoDD4MtO+j96Wu8atmhGqcNGHObuf8OM/x3AMx38+4Z2sPqzCxRFK2aF2e5Jol56XTLyggAMTL56XOMoS1W4pOyjUcGGQdZxU6qRh7B9Zp+PfpOFlqt0zyDZckPi1ttmIp03jX8gyJ8a/PG2yutpS/Vol7peZIbZcKBAEEheEIAgFbDkz5H6Zrkm2hVWGiXKiF4Ycw0RWKdtC16Q7qe3X4iOMxruonzegJzWaXFrU9utOSsLUmrc0YjeWYjCW4PDMADElpJSSQ0vQvA1Tm6/JlKnqFs1EGyZiFCqnRZTEJJJiKRYzVYzJck2Rm6P4iH+cmSY0YzimYa8l0EtTODFWhcMIMVqdsI2uiTvKmTisIDHJ3od5GILVhBCarCfVRmo4uTjkhrhzkiBV7SsaqS+TzrzM1qpGGUFt28pIySQHR6h7F6KSwGWm97ay+Z+ZqMcEjEWebE7wxCSQwpkhJqoZA5ivCdZDjJepuJ9IQjGGUmuXJdBFUygxVqVsxFsLMbDe8ZbDYVCGKxs+W080max1hFCarCfV+C1KATwcnvE9gRRuMP2prdbWGowm1KB1y+zwMMENkM755cJ2yPDtqhTI6ED1M/82yIDtC/4j4BijjeObflpO9I9MwXTCsSX8jWAFeHr05WoLTJ5G8IQVS/7vwR6ohirYM7f6HzYpogfS3R2OAAAAAElFTkSuQmCC);
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-retina .leaflet-control-layers-toggle {
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADQAAAA0CAQAAABvcdNgAAAEsklEQVR4AWL4TydIhpZK1kpWOlg0w3ZXP6D2soBtG42jeI6ZmQTHzAxiTbSJsYLjO9HhP+WOmcuhciVnmHVQcJnp7DFvScowZorad/+V/fVzMdMT2g9Cv9guXGv/7pYOrXh2U+RRR3dSd9JRx6bIFc/ekqHI29JC6pJ5ZEh1yWkhkbcFeSjxgx3L2m1cb1C7bceyxA+CNjT/Ifff+/kDk2u/w/33/IeCMOSaWZ4glosqT3DNnNZQ7Cs58/3Ce5HL78iZH/vKVIaYlqzfdLu8Vi7dnvUbEza5Idt36tquZFldl6N5Z/POLof0XLK61mZCmJSWjVF9tEjUluu74IUXvgttuVIHE7YxSkaYhJZam7yiM9Pv82JYfl9nptxZaxMJE4YSPty+vF0+Y2up9d3wwijfjZbabqm/3bZ9ecKHsiGmRflnn1MW4pjHf9oLufyn2z3y1D6n8g8TZhxyzipLNPnAUpsOiuWimg52psrTZYnOWYNDTMuWBWa0tJb4rgq1UvmutpaYEbZlwU3CLJm/ayYjHW5/h7xWLn9Hh1vepDkyf7dE7MtT5LR4e7yYpHrkhOUpEfssBLq2pPhAqoSWKUkk7EDqkmK6RrCEzqDjhNDWNE+XSMvkJRDWlZTmCW0l0PHQGRZY5t1L83kT0Y3l2SItk5JAWHl2dCOBm+fPu3fo5/3v61RMCO9Jx2EEYYhb0rmNQMX/vm7gqOEJLcXTGw3CAuRNeyaPWwjR8PRqKQ1PDA/dpv+on9Shox52WFnx0KY8onHayrJzm87i5h9xGw/tfkev0jGsQizqezUKjk12hBMKJ4kbCqGPVNXudyyrShovGw5CgxsRICxF6aRmSjlBnHRzg7Gx8fKqEubI2rahQYdR1YgDIRQO7JvQyD52hoIQx0mxa0ODtW2Iozn1le2iIRdzwWewedyZzewidueOGqlsn1MvcnQpuVwLGG3/IR1hIKxCjelIDZ8ldqWz25jWAsnldEnK0Zxro19TGVb2ffIZEsIO89EIEDvKMPrzmBOQcKQ+rroye6NgRRxqR4U8EAkz0CL6uSGOm6KQCdWjvjRiSP1BPalCRS5iQYiEIvxuBMJEWgzSoHADcVMuN7IuqqTeyUPq22qFimFtxDyBBJEwNyt6TM88blFHao/6tWWhuuOM4SAK4EI4QmFHA+SEyWlp4EQoJ13cYGzMu7yszEIBOm2rVmHUNqwAIQabISNMRstmdhNWcFLsSm+0tjJH1MdRxO5Nx0WDMhCtgD6OKgZeljJqJKc9po8juskR9XN0Y1lZ3mWjLR9JCO1jRDMd0fpYC2VnvjBSEFg7wBENc0R9HFlb0xvF1+TBEpF68d+DHR6IOWVv2BECtxo46hOFUBd/APU57WIoEwJhIi2CdpyZX0m93BZicktMj1AS9dClteUFAUNUIEygRZCtik5zSxI9MubTBH1GOiHsiLJ3OCoSZkILa9PxiN0EbvhsAo8tdAf9Seepd36lGWHmtNANTv5Jd0z4QYyeo/UEJqxKRpg5LZx6btLPsOaEmdMyxYdlc8LMaJnikDlhclqmPiQnTEpLUIZEwkRagjYkEibQErwhkTAKCLQEbUgkzJQWc/0PstHHcfEdQ+UAAAAASUVORK5CYII=);
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 5px;
+	}
+.leaflet-control-layers-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
+/* Default icon URLs */
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RfEmN8VNAsQhPqF55xHkMzz3jSmChWU6f7/XZKNH+9+hBLOHYozuKQPxyMPUKkrX/K0uWnfFaJGS1QPRtZsOPtr3NsW0uyh6NNCOkU3Yz+bXbT3I8G3xE5EXLXtCXbbqwCO9zPQYPRTZ5vIDXD7U+w7rFDEoUUf7ibHIR4y6bLVPXrz8JVZEql13trxwue/uDivd3fkWRbS6/IA2bID4uk0UpF1N8qLlbBlXs4Ee7HLTfV1j54APvODnSfOWBqtKVvjgLKzF5YdEk5ewRkGlK0i33Eofffc7HT56jD7/6U+qH3Cx7SBLNntH5YIPvODnyfIXZYRVDPqgHtLs5ABHD3YzLuespb7t79FY34DjMwrVrcTuwlT55YMPvOBnRrJ4VXTdNnYug5ucHLBjEpt30701A3Ts+HEa73u6dT3FNWwflY86eMHPk+Yu+i6pzUpRrW7SNDg5JHR4KapmM5Wv2E8Tfcb1HoqqHMHU+uWDD7zg54mz5/2BSnizi9T1Dg4QQXLToGNCkb6tb1NU+QAlGr1++eADrzhn/u8Q2YZhQVlZ5+CAOtqfbhmaUCS1ezNFVm2imDbPmPng5wmz+gwh+oHDce0eUtQ6OGDIyR0uUhUsoO3vfDmmgOezH0mZN59x7MBi++WDL1g/eEiU3avlidO671bkLfwbw5XV2P8Pzo0ydy4t2/0eu33xYSOMOD8hTf4CrBtGMSoXfPLchX+J0ruSePw3LZeK0juPJbYzrhkH0io7B3k164hiGvawhOKMLkrQLyVpZg8rHFW7E2uHOL888IBPlNZ1FPzstSJM694fWr6RwpvcJK60+0HCILTBzZLFNdtAzJaohze60T8qBzyh5ZuOg5e7uwQppofEmf2++DYvmySqGBuKaicF1blQjhuHdvCIMvp8whTTfZzI7RldpwtSzL+F1+wkdZ2TBOW2gIF88PBTzD/gpeREAMEbxnJcaJHNHrpzji0gQCS6hdkEeYt9DF/2qPcEC8RM28Hwmr3sdNyht00byAut2k3gufWNtgtOEOFGUwcXWNDbdNbpgBGxEvKkOQsxivJx33iow0Vw5S6SVTrpVq11ysA2Rp7gTfPfktc6zhtXBBC+adRLshf6sG2RfHPZ5EAc4sVZ83yCN00Fk/4kggu40ZTvIEm5g24qtU4KjBrx/BTTH8ifVASAG7gKrnWxJDcU7x8X6Ecczhm3o6YicvsLXWfh3Ch1W0k8x0nXF+0fFxgt4phz8QvypiwCCFKMqXCnqXExjq10beH+UUA7+nG6mdG/Pu0f3LgFcGrl2s0kNNjpmoJ9o4B29CMO8dMT4Q5ox8uitF6fqsrJOr8qnwNbRzv6hSnG5wP+64C7h9lp30hKNtKdWjtdkbuPA19nJ7Tz3zR/ibgARbhb4AlhavcBebmTHcFl2fvYEnW0ox9xMxKBS8btJ+KiEbq9zA4RthQXDhPa0T9TEe69gWupwc6uBUphquXgf+/FrIjweHQS4/pduMe5ERUMHUd9xv8ZR98CxkS4F2n3EUrUZ10EYNw7BWm9x1GiPssi3GgiGRDKWRYZfXlON+dfNbM+GgIwYdwAAAAASUVORK5CYII=);
+	}
+
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+	line-height: 1.4;
+	}
+.leaflet-control-attribution a {
+	text-decoration: none;
+	}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
+	text-decoration: underline;
+	}
+.leaflet-attribution-flag {
+	display: inline !important;
+	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
+	}
+.leaflet-left .leaflet-control-scale {
+	margin-left: 5px;
+	}
+.leaflet-bottom .leaflet-control-scale {
+	margin-bottom: 5px;
+	}
+.leaflet-control-scale-line {
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.8);
+	text-shadow: 1px 1px #fff;
+	}
+.leaflet-control-scale-line:not(:first-child) {
+	border-top: 2px solid #777;
+	border-bottom: none;
+	margin-top: -2px;
+	}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+	border-bottom: 2px solid #777;
+	}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+	}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	}
+
+
+/* popup */
+
+.leaflet-popup {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 20px;
+	}
+.leaflet-popup-content-wrapper {
+	padding: 1px;
+	text-align: left;
+	border-radius: 12px;
+	}
+.leaflet-popup-content {
+	margin: 13px 24px 13px 20px;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
+	min-height: 1px;
+	}
+.leaflet-popup-content p {
+	margin: 17px 0;
+	margin: 1.3em 0;
+	}
+.leaflet-popup-tip-container {
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	}
+.leaflet-popup-tip {
+	width: 17px;
+	height: 17px;
+	padding: 1px;
+
+	margin: -10px auto 0;
+	pointer-events: auto;
+
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
+	}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: white;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+	color: #585858;
+	}
+.leaflet-popup-scrolled {
+	overflow: auto;
+	}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+	-ms-zoom: 1;
+	}
+.leaflet-oldie .leaflet-popup-tip {
+	width: 24px;
+	margin: 0 auto;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+	border: 1px solid #999;
+	}
+
+
+/* div icon */
+
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
+	}
+
+
+/* Tooltip */
+/* Base styles for the element that has a tooltip */
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	color: #222;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	}
+.leaflet-tooltip.leaflet-interactive {
+	cursor: pointer;
+	pointer-events: auto;
+	}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	position: absolute;
+	pointer-events: none;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+	}
+
+/* Directions */
+
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+	left: 50%;
+	margin-left: -6px;
+	}
+.leaflet-tooltip-top:before {
+	bottom: 0;
+	margin-bottom: -12px;
+	border-top-color: #fff;
+	}
+.leaflet-tooltip-bottom:before {
+	top: 0;
+	margin-top: -12px;
+	margin-left: -6px;
+	border-bottom-color: #fff;
+	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	top: 50%;
+	margin-top: -6px;
+	}
+.leaflet-tooltip-left:before {
+	right: 0;
+	margin-right: -12px;
+	border-left-color: #fff;
+	}
+.leaflet-tooltip-right:before {
+	left: 0;
+	margin-left: -12px;
+	border-right-color: #fff;
+	}
+
+/* Printing */
+
+@media print {
+	/* Prevent printers from removing background-images of controls. */
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		}
+	}
+
+
+/* ============ CSS 变量 ============ */
+:root {
+  --color-primary: #2c3e50;
+  --color-danger: #e74c3c;
+  --color-success: #27ae60;
+  --color-warning: #f39c12;
+  --color-bg: #ffffff;
+  --color-text: #333333;
+  --color-border: #e0e0e0;
+  --color-overlay: rgba(0,0,0,0.5);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color: var(--color-text);
+}
+
+/* ============ 地图容器 ============ */
+#map {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(100vh - 48px);
+  height: calc(100dvh - 48px);
+  z-index: 1;
+}
+
+/* ============ 顶部工具栏 ============ */
+#toolbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 48px;
+  background: var(--color-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  z-index: 10000;
+  gap: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+#toolbar::-webkit-scrollbar { display: none; }
+
+/* 私密点位锁按钮（v15）：推到工具栏最右 */
+#btnLock {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+#btnLock.unlocked {
+  background: #ffd666;
+  color: #4a3a00;
+}
+#btnLock.unlocked .btn-text { color: #4a3a00; }
+
+/* 返回博客主站入口（v17）
+   刻意做成「胶囊 + 描边」形态，与工具栏里方角的操作按钮区分开，
+   让访客一眼认出这是导航链接而不是工具功能 */
+#backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 13px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+  text-decoration: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: background .15s, border-color .15s, transform .1s;
+}
+#backLink:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.75);
+}
+#backLink:active { transform: scale(0.95); }
+#backLink:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.85); outline-offset: 2px; }
+#backLink .back-arrow { font-weight: 700; }
+
+#toolbar .brand {
+  font-weight: 700;
+  padding: 0 10px 0 4px;
+  flex-shrink: 0;
+  font-size: 15px;
+}
+
+.tool-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background .15s, transform .1s;
+  white-space: nowrap;
+}
+.tool-btn:hover { background: #34495e; }
+.tool-btn:active { transform: scale(0.95); }
+.tool-btn.active {
+  background: #fff;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.tool-btn .badge {
+  background: var(--color-danger);
+  color: #fff;
+  font-size: 11px;
+  border-radius: 9px;
+  padding: 1px 6px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 16px;
+}
+
+.tool-btn.active .badge { background: var(--color-primary); color: #fff; }
+
+/* 「☁️ 提交」按钮：只在解锁后出现（app.js 控制显隐）。
+   有待提交改动时高亮一下，提醒别把改动忘在本机。 */
+#btnSubmit { background: rgba(255,255,255,0.12); }
+#btnSubmit.has-pending {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+#btnSubmit.has-pending .badge { background: #fff; color: var(--color-primary); }
+#btnSubmit:disabled { opacity: .6; cursor: default; }
+#btnSubmit:disabled:active { transform: none; }
+
+/* 底图选择下拉框 */
+.tool-select {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  height: 36px;
+  padding: 0 6px 0 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  flex-shrink: 0;
+  max-width: 150px;
+  transition: background .15s;
+  white-space: nowrap;
+}
+.tool-select:hover { background: rgba(255,255,255,0.25); }
+.tool-select:focus { outline: none; background: rgba(255,255,255,0.28); }
+.tool-select option { color: #333; background: #fff; }
+
+.tool-sep {
+  width: 1px;
+  height: 24px;
+  background: rgba(255,255,255,0.25);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* 搜索框 */
+#searchWrap {
+  position: relative;
+  flex: 1;
+  min-width: 100px;
+  max-width: 260px;
+  margin: 0 6px;
+  flex-shrink: 1;
+}
+#searchInput {
+  width: 100%;
+  height: 32px;
+  border: none;
+  border-radius: 16px;
+  padding: 0 14px;
+  font-size: 13px;
+  outline: none;
+  background: rgba(255,255,255,0.92);
+  color: var(--color-text);
+}
+#searchInput::placeholder { color: #999; }
+#searchResults {
+  position: fixed;
+  top: 0; left: 0;
+  width: 260px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 20000;
+  display: none;
+}
+#searchResults .item {
+  padding: 9px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  border-bottom: 1px solid #f0f0f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#searchResults .item:hover { background: #f5f7fa; }
+#searchResults .item .cat-tag {
+  font-size: 11px;
+  background: #eee;
+  border-radius: 4px;
+  padding: 1px 6px;
+  flex-shrink: 0;
+}
+#searchResults .empty {
+  padding: 12px 14px;
+  color: #999;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ============ 分组面板 ============ */
+#filterPanel {
+  position: fixed;
+  top: 52px;
+  right: 12px;
+  width: 240px;
+  background: var(--color-bg);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  padding: 10px 0;
+  z-index: 1500;
+  display: none;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+#filterPanel.show { display: block; }
+#filterPanel .f-title {
+  font-size: 12px;
+  color: #999;
+  padding: 4px 16px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 6px;
+}
+.filter-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.filter-item:hover { background: #f5f7fa; }
+.filter-item.disabled { opacity: 0.55; cursor: not-allowed; }
+.filter-item .count {
+  margin-left: auto;
+  color: #999;
+  font-size: 12px;
+}
+.filter-item input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: var(--color-primary);
+}
+
+/* 时间区间筛选 */
+#filterPanel .f-sep {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 8px 16px;
+}
+#filterPanel .f-time-title {
+  font-size: 12px;
+  color: #999;
+  padding: 2px 16px 6px;
+}
+#filterPanel .f-time-enable {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 4px 16px;
+  cursor: pointer;
+}
+#filterPanel .f-time-enable input { accent-color: var(--color-primary); }
+#filterPanel .f-time-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 16px 2px;
+}
+#filterPanel .time-preset {
+  flex: 1 1 calc(50% - 6px);
+  background: #f5f7fa;
+  border: 1px solid #e6e8eb;
+  border-radius: 6px;
+  padding: 5px 0;
+  font-size: 12px;
+  color: #444;
+  cursor: pointer;
+}
+#filterPanel .time-preset:hover { background: #eef1f5; }
+#filterPanel .time-preset.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+#filterPanel .f-time-range {
+  padding: 6px 16px 4px;
+}
+#filterPanel .f-time-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 6px;
+}
+#filterPanel .f-time-label input {
+  margin-top: 2px;
+  font-size: 12px;
+  padding: 4px;
+  border: 1px solid #e6e8eb;
+  border-radius: 5px;
+  color: #333;
+}
+#filterPanel .f-time-hint {
+  font-size: 10px;
+  color: #aaa;
+  line-height: 1.4;
+}
+
+/* ============ 通知条 ============ */
+#notices {
+  position: fixed;
+  top: 48px; left: 0; right: 0;
+  z-index: 2000;
+  pointer-events: none;
+}
+.notice {
+  background: var(--color-warning);
+  color: #000;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 16px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  pointer-events: auto;
+}
+.notice .close {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #000;
+  padding: 0 4px;
+  margin-left: 12px;
+}
+
+/* ============ 添加/编辑弹窗表单 ============ */
+#formModal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--color-overlay);
+  z-index: 3000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+#formModal.show { display: flex; }
+
+#formCard {
+  background: var(--color-bg);
+  border-radius: 12px;
+  width: 420px;
+  max-width: 92vw;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.3);
+}
+#formCard .f-header {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+}
+#formCard .f-header .close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+#formCard .f-body { padding: 18px 20px; }
+.form-row { margin-bottom: 14px; }
+.form-row label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+.form-row label .req { color: var(--color-danger); }
+.form-row input[type="text"],
+.form-row input[type="url"],
+.form-row input[type="datetime-local"],
+.form-row textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+}
+.form-row input:focus, .form-row textarea:focus {
+  border-color: var(--color-primary);
+}
+.form-row input:disabled {
+  background: #f5f5f5;
+  color: #aaa;
+  cursor: not-allowed;
+}
+.form-row textarea {
+  min-height: 110px;
+  resize: vertical;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.form-row .hint { font-size: 12px; color: #999; margin-top: 4px; }
+
+/* 分类单选按钮 */
+.cat-radios { display: flex; flex-wrap: wrap; gap: 8px; }
+.cat-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 5px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+  user-select: none;
+}
+.cat-radio:hover { border-color: var(--color-primary); }
+.cat-radio.selected {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.cat-radio input { display: none; }
+
+/* 复选框 */
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.check-row input[type="checkbox"] { accent-color: var(--color-success); width: 16px; height: 16px; }
+
+/* 预览区 */
+#mdPreview {
+  border: 1px dashed var(--color-border);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #fafbfc;
+  font-size: 14px;
+  line-height: 1.7;
+  display: none;
+  max-height: 260px;
+  overflow-y: auto;
+}
+#mdPreview h1, #mdPreview h2, #mdPreview h3 { margin: 8px 0 6px; font-size: 1.1em; }
+#mdPreview p { margin: 6px 0; }
+#mdPreview img { max-width: 100%; border-radius: 6px; }
+#mdPreview ul, #mdPreview ol { padding-left: 20px; margin: 6px 0; }
+#mdPreview code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+#mdPreview blockquote { border-left: 3px solid #ccc; padding-left: 10px; color: #666; margin: 6px 0; }
+
+#formCard .f-footer {
+  padding: 14px 20px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  position: sticky;
+  bottom: 0;
+  background: var(--color-bg);
+  border-radius: 0 0 12px 12px;
+}
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity .15s, transform .1s;
+}
+.btn:hover { opacity: 0.88; }
+.btn:active { transform: scale(0.96); }
+.btn-primary { background: var(--color-primary); color: #fff; }
+.btn-success { background: var(--color-success); color: #fff; }
+.btn-danger { background: var(--color-danger); color: #fff; }
+.btn-default { background: #eee; color: var(--color-text); }
+
+/* ============ 弹窗（Leaflet popup 自定义） ============ */
+.marker-popup .leaflet-popup-content-wrapper {
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+  padding: 0;
+  overflow: hidden;
+}
+.marker-popup .leaflet-popup-content {
+  margin: 0;
+  width: 360px !important;
+  max-width: 90vw;
+}
+.marker-popup .leaflet-popup-tip {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+}
+
+.popup-title {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 10px 40px 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  word-break: break-all;
+}
+.popup-title .popup-close {
+  position: absolute;
+  right: 8px; top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+.popup-title .popup-close:hover { opacity: 0.75; }
+
+.popup-body { padding: 12px 14px; }
+.popup-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 10px;
+}
+.popup-meta .cat-badge {
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.popup-meta .visited-badge {
+  color: var(--color-success);
+  font-weight: 600;
+}
+.popup-meta .time-badge { color: #888; }
+.popup-meta .private-badge {
+  background: #fff4e5;
+  color: #b26a00;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-weight: 600;
+}
+
+.popup-content {
+  font-size: 13px;
+  line-height: 1.7;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  max-height: 300px;
+  max-height: 60vh;
+  overflow-y: auto;
+  word-break: break-word;
+}
+.popup-content h1, .popup-content h2, .popup-content h3 { margin: 8px 0 6px; font-size: 1.05em; }
+.popup-content p { margin: 6px 0; }
+.popup-content img { max-width: 100%; border-radius: 6px; }
+.popup-content ul, .popup-content ol { padding-left: 20px; margin: 6px 0; }
+.popup-content code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+.popup-content blockquote { border-left: 3px solid #ccc; padding-left: 10px; color: #666; margin: 6px 0; }
+.popup-content a { color: #2980b9; }
+
+.popup-actions {
+  display: flex;
+  gap: 8px;
+  border-top: 1px solid #eee;
+  padding: 10px 14px;
+}
+.popup-actions .btn {
+  flex: 1;
+  padding: 7px 0;
+  font-size: 13px;
+  text-align: center;
+}
+.popup-actions .btn-danger { background: none; border: 1px solid var(--color-danger); color: var(--color-danger); }
+.popup-actions .btn-danger:hover { background: var(--color-danger); color: #fff; opacity: 1; }
+
+/* 编辑模式（在弹窗内） */
+.popup-edit .form-row { margin-bottom: 10px; }
+.popup-edit input[type="text"],
+.popup-edit input[type="url"],
+.popup-edit input[type="datetime-local"],
+.popup-edit textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+}
+.popup-edit input:disabled { background: #f5f5f5; color: #aaa; }
+.popup-edit textarea {
+  min-height: 90px;
+  resize: vertical;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.popup-edit .f-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.popup-edit .f-actions .btn { flex: 1; padding: 7px 0; font-size: 13px; }
+
+/* ============ 路线模式序号圆圈 ============ */
+.route-num {
+  background: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #000;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ============ 底部信息栏 ============ */
+#statusbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 24px;
+  background: rgba(44,62,80,0.9);
+  color: rgba(255,255,255,0.85);
+  font-size: 11px;
+  line-height: 24px;
+  padding: 0 12px;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============ 移动端适配 ============ */
+@media (max-width: 768px) {
+  #toolbar { padding: 0 4px; gap: 2px; }
+  #toolbar .brand { display: none; }
+  /* 窄屏返回入口只留箭头，节省横向空间（与 .tool-btn 的 btn-text 一致） */
+  #backLink { padding: 0 10px; font-size: 12px; }
+  #backLink .btn-text { display: none; }
+  .tool-btn { padding: 0 9px; font-size: 12px; }
+  .tool-select { font-size: 12px; max-width: 110px; padding: 0 4px 0 8px; }
+  .tool-btn .btn-text { display: none; } /* 窄屏只显示图标 */
+  #searchWrap { max-width: none; flex: 1; margin: 0 4px; }
+  #searchWrap .tool-btn { display: none; }
+
+  /* 弹窗 */
+  .marker-popup .leaflet-popup-content { width: 90vw !important; }
+
+  /* 编辑模式全屏模态框 */
+  #formModal.show { display: flex; }
+  #formCard {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  #formCard .f-header { border-radius: 0; }
+  #formCard .f-body { flex: 1; overflow-y: auto; }
+  #formCard .f-footer { border-radius: 0; }
+
+  /* 弹窗内编辑模式也全屏 */
+  .marker-popup .leaflet-popup-content { width: 92vw !important; }
+}
+
+@media (max-width: 768px) {
+  /* 弹窗内编辑保持弹窗尺寸，避免全屏弹窗遮挡地图 */
+}
+
+/* =========================================================
+ * v14 访问锁屏
+ * ========================================================= */
+#lockScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;               /* 默认显示：未解锁前始终遮挡页面 */
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 18, 32, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+#lockScreen.hide { display: none; }   /* 默认隐藏，点锁按钮才弹出 */
+
+.lock-box {
+  position: relative;
+  width: 320px;
+  max-width: 86vw;
+  padding: 36px 28px 28px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+.lock-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: #9aa4b2;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.lock-close:hover { background: #f1f4f8; color: #4a5568; }
+.lock-icon { font-size: 42px; line-height: 1; }
+.lock-title { margin-top: 10px; font-size: 20px; font-weight: 700; color: #222; }
+.lock-hint { margin: 8px 0 18px; font-size: 13px; color: #888; }
+.lock-row { display: flex; gap: 8px; }
+.lock-row input {
+  flex: 1;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #d0d7e2;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  min-width: 0;
+}
+.lock-row input:focus { border-color: #3b82f6; }
+#lockBtn {
+  height: 38px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 8px;
+  background: #3b82f6;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+#lockBtn:hover { background: #2f6fe0; }
+.lock-msg { margin-top: 12px; min-height: 18px; font-size: 13px; color: #dc2626; }
+.lock-msg.ok { color: #16a34a; }
+
+@keyframes lockShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+.lock-box.shake { animation: lockShake 0.4s; }
+
+/* =========================================================
+ * 产品化新增：模式徽章 + 设置面板（2026-10-23）
+ * ========================================================= */
+
+/* 品牌可点击（打开设置） */
+#toolbar .brand { cursor: pointer; }
+#toolbar .brand:hover { opacity: .85; }
+
+/* 模式徽章：一眼看出数据存在哪 */
+.mode-tag {
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 18px;
+  padding: 0 7px;
+  border-radius: 9px;
+  margin-right: 6px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: rgba(255,255,255,.92);
+  white-space: nowrap;
+}
+.mode-tag.mode-local  { background: rgba(255,255,255,.14); }
+.mode-tag.mode-static { background: rgba(52,152,219,.55); border-color: rgba(52,152,219,.9); }
+.mode-tag.mode-cloud  { background: rgba(39,174,96,.55); border-color: rgba(39,174,96,.9); }
+
+/* ---------- 设置面板 ---------- */
+#settingsScreen {
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+#settingsScreen.hide { display: none; }
+
+.settings-box {
+  background: var(--color-bg);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 20px 22px 24px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.28);
+  position: relative;
+  animation: setIn .18s ease-out;
+}
+@keyframes setIn {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+.settings-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 30px; height: 30px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  color: #999;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.settings-close:hover { background: #f2f2f2; color: #333; }
+
+.settings-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 16px;
+}
+
+.set-sec {
+  padding: 14px 0;
+  border-top: 1px solid #f0f0f0;
+}
+.set-sec:first-of-type { border-top: none; padding-top: 0; }
+
+.set-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.set-modes { display: flex; flex-direction: column; gap: 8px; }
+
+.set-mode {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 9px 11px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.set-mode:hover { border-color: #b9c4d0; background: #fafbfc; }
+.set-mode input { margin-top: 3px; accent-color: var(--color-primary); flex-shrink: 0; }
+.set-mode span { display: flex; flex-direction: column; gap: 2px; }
+.set-mode b { font-size: 13px; font-weight: 600; color: #333; }
+.set-mode i { font-style: normal; font-size: 11.5px; line-height: 1.5; color: #888; }
+.set-mode input:checked + span b { color: var(--color-primary); }
+
+.set-row { display: flex; gap: 8px; margin-top: 10px; }
+.set-row input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  font-size: 12.5px;
+  color: var(--color-text);
+  outline: none;
+}
+.set-row input:focus { border-color: var(--color-primary); }
+
+.set-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.set-btn {
+  height: 34px;
+  padding: 0 13px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  border-radius: 7px;
+  font-size: 12.5px;
+  color: #444;
+  cursor: pointer;
+  transition: all .15s;
+}
+.set-btn:hover { border-color: var(--color-primary); color: var(--color-primary); background: #f7f9fb; }
+.set-btn:active { transform: scale(.97); }
+
+.set-hint {
+  margin-top: 9px;
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: #8a8a8a;
+}
+.set-about .set-hint { color: #999; }
+
+@media (max-width: 640px) {
+  .settings-box { padding: 16px 16px 20px; max-height: 92vh; }
+  .set-actions .set-btn { flex: 1 1 calc(50% - 4px); }
+  .mode-tag { font-size: 10px; padding: 0 6px; }
+}
